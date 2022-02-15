@@ -49,7 +49,7 @@ passport.use(new JwtStrategy(jwtValidationOptions, function(jwt_payload, done) {
 /*
 app.get('/logintest', passport.authenticate('basic', {session: false }), (req, res) => {
 
-  res.send('Hello saatana')
+  res.send('Hello hello')
 });
 */
 

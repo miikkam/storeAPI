@@ -2,6 +2,21 @@ const express = require('express')
 const { append } = require('express/lib/response');
 const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
+const Ajv = require('ajv');
+const ajv = new Ajv({strict: false});
+
+const newPostingSchema = require('./../schemas/newPosting.schema.json');
+const newPostingValidator = ajv.compile(newPostingSchema);
+
+const postingValidateMw = function(req, res, next) {
+
+    const validatonResult = newPostingValidator(req.body);
+    if(validatonResult == true) {
+        next();
+    } else {
+        res.sendStatus(400);
+    }
+}
 
 
 const postings = [
@@ -11,7 +26,14 @@ const postings = [
         "description": "string",       
         "category": "string",
         "location": "string",
-        "price" : 9.99,       
+        "price" : 9.99,
+        "deliveryType": {
+
+            "shipping": true,
+    
+            "pickup": true
+    
+        },
         "dateOfPosting" : "2021-12-25"
     },
     {
@@ -20,7 +42,14 @@ const postings = [
         "description": "string",       
         "category": "string",
         "location": "string",
-        "price" : 19,       
+        "price" : 19,
+        "deliveryType": {
+
+            "shipping": true,
+    
+            "pickup": true
+    
+        },       
         "dateOfPosting" : "2021-11-29"
     }
 ];
@@ -60,8 +89,9 @@ router.delete('/:postingID', (req, res) => {
      }
  })
 
-router.post('/', (req, res) => {
+router.post('/', postingValidateMw, (req, res) => {
     console.log(req.body);
+
 
     postings.push({
         id: uuidv4(),
@@ -70,13 +100,14 @@ router.post('/', (req, res) => {
         category: req.body.category,
         location: req.body.location,
         price: req.body.price,
+        deliveryType: req.body.deliveryType,
         dateOfPosting: req.body.dateOfPosting
     })
     res.sendStatus(201);
 
  });
 
-router.put('/:postingId', (req, res) => {
+router.put('/:postingId', postingValidateMw, (req, res) => {
     let foundPosting = postings.find(t => t.id === req.params.postingId);
     if(foundPosting) {
         foundPosting.title = req.body.title;
