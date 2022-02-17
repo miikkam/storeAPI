@@ -4,7 +4,7 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const app = express()
-app.set('port', (process.env.PORT || 80));
+app.set('port', (process.env.PORT || 3000));
 app.use(bodyParser.json());
 
 const postings = require('./routes/postings')
