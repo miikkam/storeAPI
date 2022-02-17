@@ -4,6 +4,8 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
 const Ajv = require('ajv');
 const ajv = new Ajv({strict: false});
+const multer = require('multer');
+const upload = multer({ dest : 'uploads/' });
 
 const newPostingSchema = require('./../schemas/newPosting.schema.json');
 const newPostingValidator = ajv.compile(newPostingSchema);
@@ -42,6 +44,10 @@ const postings = [
         "description": "string",       
         "category": "string",
         "location": "string",
+        "images" : [
+            "image1",
+            "image2"
+        ],
         "price" : 19,
         "deliveryType": {
 
@@ -89,7 +95,7 @@ router.delete('/:postingID', (req, res) => {
      }
  })
 
-router.post('/', postingValidateMw, (req, res) => {
+router.post('/', upload.array('images', 4), (req, res) => {
     console.log(req.body);
 
 
@@ -99,6 +105,7 @@ router.post('/', postingValidateMw, (req, res) => {
         description: req.body.description,
         category: req.body.category,
         location: req.body.location,
+        images: req.files.map(file => file.path),
         price: req.body.price,
         deliveryType: req.body.deliveryType,
         dateOfPosting: req.body.dateOfPosting
@@ -107,13 +114,14 @@ router.post('/', postingValidateMw, (req, res) => {
 
  });
 
-router.put('/:postingId', postingValidateMw, (req, res) => {
+router.put('/:postingId', upload.array('images', 4), (req, res) => {
     let foundPosting = postings.find(t => t.id === req.params.postingId);
     if(foundPosting) {
         foundPosting.title = req.body.title;
         foundPosting.description = req.body.description;
         foundPosting.category = req.body.category;
         foundPosting.location = req.body.location;
+        foundPosting.images = req.files.map(file => file.path),
         foundPosting.price = req.body.price;
         foundPosting.dateOfPosting = req.body.dateOfPosting;
         res.sendStatus(202);

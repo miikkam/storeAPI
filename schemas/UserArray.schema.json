@@ -1,0 +1,152 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "UserArraySchema",
+    "type": "array",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": [],
+    "examples": [
+        [
+            {
+                "id": "sadasdasd",
+                "username": "pena123",
+                "firstName": "Pentti",
+                "lastName": "Arajärvi",
+                "email": "pena@hotmail.com",
+                "password": "penaonkingi",
+                "dateOfBirth": "1965-04-23",
+                "emailVerified": true,
+                "createDate": "2021-12-25"
+            }
+        ]
+    ],
+    "items": {
+        "$id": "#/items",
+        "anyOf": [
+            {
+                "$id": "#/items/anyOf/0",
+                "type": "object",
+                "title": "The first anyOf schema",
+                "description": "An explanation about the purpose of this instance.",
+                "default": {},
+                "examples": [
+                    {
+                        "id": "sadasdasd",
+                        "username": "pena123",
+                        "firstName": "Pentti",
+                        "lastName": "Arajärvi",
+                        "email": "pena@hotmail.com",
+                        "password": "penaonkingi",
+                        "dateOfBirth": "1965-04-23",
+                        "emailVerified": true,
+                        "createDate": "2021-12-25"
+                    }
+                ],
+                "required": [
+                    "id",
+                    "username",
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "password",
+                    "dateOfBirth",
+                    "emailVerified",
+                    "createDate"
+                ],
+                "properties": {
+                    "id": {
+                        "$id": "#/items/anyOf/0/properties/id",
+                        "type": "string",
+                        "title": "The id schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "sadasdasd"
+                        ]
+                    },
+                    "username": {
+                        "$id": "#/items/anyOf/0/properties/username",
+                        "type": "string",
+                        "title": "The username schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "pena123"
+                        ]
+                    },
+                    "firstName": {
+                        "$id": "#/items/anyOf/0/properties/firstName",
+                        "type": "string",
+                        "title": "The firstName schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "Pentti"
+                        ]
+                    },
+                    "lastName": {
+                        "$id": "#/items/anyOf/0/properties/lastName",
+                        "type": "string",
+                        "title": "The lastName schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "Arajärvi"
+                        ]
+                    },
+                    "email": {
+                        "$id": "#/items/anyOf/0/properties/email",
+                        "type": "string",
+                        "title": "The email schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "pena@hotmail.com"
+                        ]
+                    },
+                    "password": {
+                        "$id": "#/items/anyOf/0/properties/password",
+                        "type": "string",
+                        "title": "The password schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "penaonkingi"
+                        ]
+                    },
+                    "dateOfBirth": {
+                        "$id": "#/items/anyOf/0/properties/dateOfBirth",
+                        "type": "string",
+                        "title": "The dateOfBirth schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "1965-04-23"
+                        ]
+                    },
+                    "emailVerified": {
+                        "$id": "#/items/anyOf/0/properties/emailVerified",
+                        "type": "boolean",
+                        "title": "The emailVerified schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": false,
+                        "examples": [
+                            true
+                        ]
+                    },
+                    "createDate": {
+                        "$id": "#/items/anyOf/0/properties/createDate",
+                        "type": "string",
+                        "title": "The createDate schema",
+                        "description": "An explanation about the purpose of this instance.",
+                        "default": "",
+                        "examples": [
+                            "2021-12-25"
+                        ]
+                    }
+                },
+                "additionalProperties": true
+            }
+        ]
+    }
+}
