@@ -4,7 +4,7 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const bodyParser = require('body-parser');
 const bcrypt = require('bcryptjs');
 const app = express()
-const port = process.env.PORT || 80;
+app.set('port', (process.env.PORT || 80));
 app.use(bodyParser.json());
 
 const postings = require('./routes/postings')
@@ -76,13 +76,12 @@ app.get('/jwtSecured', passport.authenticate('jwt', {session: false}), (req, res
 app.use('/postings', postings)
 app.use('/users', users)
 
-let serverInstance = null;
 
 module.exports = {
   start: function() {
-    serverInstance = app.listen(port, () => {
-      console.log(`Example app listening on port ${port}`)
-    })
+    app.listen(app.get('port'), function() {
+      console.log('Node app is running on port', app.get('port'));
+    });
   },
   close: function() {
       serverInstance.close();
