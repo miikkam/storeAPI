@@ -25,11 +25,6 @@ passport.use(new BasicStrategy(
     }
   ));
 
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 const secretKey = require('./keys.json')
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy,
