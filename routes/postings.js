@@ -4,8 +4,18 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
 const Ajv = require('ajv');
 const ajv = new Ajv({strict: false});
+const cloudinary = require('cloudinary');
+const cloudinaryStorage = require('multer-storage-cloudinary');
 const multer = require('multer');
-const upload = multer({ dest : 'uploads/' });
+//const upload = multer({ dest : 'uploads/' });
+
+const storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: "",
+    allowedFormats: ['jpg', 'png'],
+});
+
+const parser = multer({ storage: storage });
 
 const newPostingSchema = require('./../schemas/newPosting.schema.json');
 const newPostingValidator = ajv.compile(newPostingSchema);
@@ -95,7 +105,7 @@ router.delete('/:postingID', (req, res) => {
      }
  })
 
-router.post('/', upload.array('images', 4), (req, res) => {
+router.post('/', parser.single('image'), (req, res) => {
     console.log(req.body);
 
 
@@ -105,7 +115,8 @@ router.post('/', upload.array('images', 4), (req, res) => {
         description: req.body.description,
         category: req.body.category,
         location: req.body.location,
-        images: req.files.map(file => file.path),
+        //images: req.files.map(file => file.path),
+        images:req.file,
         price: req.body.price,
         deliveryType: req.body.deliveryType,
         dateOfPosting: req.body.dateOfPosting
@@ -114,14 +125,15 @@ router.post('/', upload.array('images', 4), (req, res) => {
 
  });
 
-router.put('/:postingId', upload.array('images', 4), (req, res) => {
+router.put('/:postingId', parser.single('image'), (req, res) => {
     let foundPosting = postings.find(t => t.id === req.params.postingId);
     if(foundPosting) {
         foundPosting.title = req.body.title;
         foundPosting.description = req.body.description;
         foundPosting.category = req.body.category;
         foundPosting.location = req.body.location;
-        foundPosting.images = req.files.map(file => file.path),
+        //foundPosting.images = req.files.map(file => file.path),
+        foundPosting =req.file;
         foundPosting.price = req.body.price;
         foundPosting.dateOfPosting = req.body.dateOfPosting;
         res.sendStatus(202);
