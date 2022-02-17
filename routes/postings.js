@@ -4,18 +4,18 @@ const router = express.Router()
 const { v4: uuidv4 } = require('uuid');
 const Ajv = require('ajv');
 const ajv = new Ajv({strict: false});
-const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
-const multer = require('multer');
+var cloudinary = require('cloudinary');
+var cloudinaryStorage = require('multer-storage-cloudinary');
+var multer = require('multer');
 //const upload = multer({ dest : 'uploads/' });
 
-const storage = cloudinaryStorage({
+var storage = cloudinaryStorage({
     cloudinary: cloudinary,
-    folder: "",
+    folder: '',
     allowedFormats: ['jpg', 'png'],
 });
 
-const parser = multer({ storage: storage });
+var parser = multer({ storage: storage });
 
 const newPostingSchema = require('./../schemas/newPosting.schema.json');
 const newPostingValidator = ajv.compile(newPostingSchema);
