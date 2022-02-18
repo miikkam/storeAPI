@@ -109,7 +109,6 @@ router.delete('/:postingID', (req, res) => {
 router.post('/', parser.single('image'), (req, res) => {
     console.log(req.body);
 
-
     postings.push({
         id: uuidv4(),
         title: req.body.title,
