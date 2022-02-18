@@ -106,7 +106,7 @@ router.delete('/:postingID', (req, res) => {
      }
  })
 
-router.post('/', parser.single('image'), (req, res) => {
+router.post('/', parser.single('images'), (req, res) => {
     console.log(req.body);
 
     postings.push({
@@ -116,7 +116,7 @@ router.post('/', parser.single('image'), (req, res) => {
         category: req.body.category,
         location: req.body.location,
         //images: req.files.map(file => file.path),
-        images:req.file.images,
+        images:req.file,
         price: req.body.price,
         deliveryType: req.body.deliveryType,
         dateOfPosting: req.body.dateOfPosting
@@ -125,7 +125,7 @@ router.post('/', parser.single('image'), (req, res) => {
 
  });
 
-router.put('/:postingId', parser.single('image'), (req, res) => {
+router.put('/:postingId', parser.single('images'), (req, res) => {
     let foundPosting = postings.find(t => t.id === req.params.postingId);
     if(foundPosting) {
         foundPosting.title = req.body.title;
@@ -133,7 +133,7 @@ router.put('/:postingId', parser.single('image'), (req, res) => {
         foundPosting.category = req.body.category;
         foundPosting.location = req.body.location;
         //foundPosting.images = req.files.map(file => file.path),
-        foundPosting =req.file.images;
+        foundPosting =req.file;
         foundPosting.price = req.body.price;
         foundPosting.dateOfPosting = req.body.dateOfPosting;
         res.sendStatus(202);
