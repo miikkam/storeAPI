@@ -41,12 +41,12 @@ passport.use(new JwtStrategy(jwtValidationOptions, function(jwt_payload, done) {
 
 }));
 
-/*
-app.get('/logintest', passport.authenticate('basic', {session: false }), (req, res) => {
+
+app.get('/', (req, res) => {
 
   res.send('Hello hello')
 });
-*/
+
 
 app.post('/login', passport.authenticate('basic', {session: false}), (req, res) => {
 
