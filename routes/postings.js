@@ -116,7 +116,7 @@ router.post('/', parser.single('image'), (req, res) => {
         category: req.body.category,
         location: req.body.location,
         //images: req.files.map(file => file.path),
-        images:req.file,
+        images:req.file.images,
         price: req.body.price,
         deliveryType: req.body.deliveryType,
         dateOfPosting: req.body.dateOfPosting
@@ -133,7 +133,7 @@ router.put('/:postingId', parser.single('image'), (req, res) => {
         foundPosting.category = req.body.category;
         foundPosting.location = req.body.location;
         //foundPosting.images = req.files.map(file => file.path),
-        foundPosting =req.file;
+        foundPosting =req.file.images;
         foundPosting.price = req.body.price;
         foundPosting.dateOfPosting = req.body.dateOfPosting;
         res.sendStatus(202);
