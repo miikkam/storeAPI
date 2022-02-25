@@ -1,0 +1,407 @@
+openapi: 3.1.0
+info:
+  title: store
+  version: '1.0'
+servers:
+  - url: 'https://munkauppa-api.herokuapp.com/'
+paths:
+  '/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: Id of an existing user.
+    get:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    username: alice666
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    password: joujou
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    createDate: '2019-08-24'
+        '404':
+          description: User Not Found
+      operationId: get-users-userId
+      description: Retrieve the information of the user with the matching user ID.
+  /users:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    username: bobi
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    password: s4l4s4n4
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                username:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                  format: password
+                dateOfBirth:
+                  type: string
+                  format: date
+                createDate:
+                  type: string
+                  format: date
+              required:
+                - username
+                - firstName
+                - lastName
+                - email
+                - password
+                - dateOfBirth
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  username: bobi
+                  email: bob.fellow@gmail.com
+                  password: s4l4s4n4
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+    parameters: []
+    get:
+      summary: Get info of all the users
+      operationId: get-users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      description: Get all users
+  /postings:
+    post:
+      summary: Create new posting
+      operationId: post-posting
+      responses:
+        '200':
+          description: Posting created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+        '400':
+          description: Missaing required information
+          headers: {}
+      description: Create new posting.
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                category:
+                  type: string
+                location:
+                  type: string
+                price:
+                  type: number
+                images:
+                  type: string
+                  format: binary
+                deliveryType:
+                  anyOf:
+                    - properties:
+                        shipping:
+                          type: boolean
+                        pickup:
+                          type: boolean
+                  type: object
+                dateOfPosting:
+                  type: string
+                  format: date
+              required:
+                - title
+                - category
+                - location
+                - price
+                - deliveryType
+            examples:
+              New Posting:
+                value:
+                  title: Kengät
+                  description: Vähän käytetyt kengät
+                  category: Miesten jalkineet
+                  location: Oulu
+                  price: 19.99
+                  images: string
+                  deliveryType:
+                    shipping: true
+                    pickup: true
+                  dateOfPosting: '2019-08-24'
+        description: ''
+    parameters: []
+    get:
+      summary: Get all postings
+      operationId: get-postings
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+      description: get all postings
+  '/postings/{postingId}':
+    parameters:
+      - schema:
+          type: string
+        name: postingId
+        in: path
+        required: true
+    get:
+      summary: Get posting info
+      tags: []
+      responses:
+        '200':
+          description: Posting found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+        '404':
+          description: Posting not Found
+      operationId: get-postings-postingId
+      description: Get posting information.
+    delete:
+      summary: Delete posting
+      operationId: delete-postings-postingId
+      responses:
+        '200':
+          description: Posting Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+      description: Delete a posting.
+    put:
+      summary: Edit posting
+      operationId: put-postings-postingId
+      responses:
+        '200':
+          description: Posting updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+        '400':
+          description: Missing Required information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Posting'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                location:
+                  type: string
+                price:
+                  type: number
+                images:
+                  type: string
+                  format: binary
+                deliveryType:
+                  anyOf:
+                    - properties:
+                        delivery:
+                          type: boolean
+                        pickup:
+                          type: boolean
+                  type: object
+  /login:
+    post:
+      summary: Login
+      operationId: post-login
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+      description: Login to account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                  format: password
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      description: ''
+      examples:
+        - id: 142
+          username: alice666
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          password: jagjpoadgjpoeag522
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          createDate: '2019-08-24'
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1997-10-31'
+        emailVerified:
+          type: boolean
+          description: Set to true if the user's email has been verified.
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+      required:
+        - id
+        - username
+        - firstName
+        - lastName
+        - email
+        - password
+        - dateOfBirth
+        - emailVerified
+        - createDate
+    Posting:
+      title: Posting
+      type: object
+      examples:
+        - id: 0
+          title: string
+          description: string
+          category: string
+          location: string
+          images: string
+          price: 0
+          deliveryType:
+            shipping: true
+            pickup: true
+          dateOfPosting: '2019-08-24'
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        location:
+          type: string
+        images:
+          type: string
+          format: binary
+        price:
+          type: number
+        deliveryType:
+          anyOf:
+            - properties:
+                shipping:
+                  type: boolean
+                pickup:
+                  type: boolean
+              required:
+                - shipping
+                - pickup
+          type: object
+        dateOfPosting:
+          type: string
+          format: date
+      required:
+        - id
+        - title
+        - description
+        - category
+        - location
+        - price
+        - deliveryType
+        - dateOfPosting
+  securitySchemes:
+    Authorization:
+      name: Bearer Token
+      type: apiKey
+      in: header
